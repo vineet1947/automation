@@ -1,2 +1,2 @@
 # automation  
-Run all in pyhton ide 
+Run all in python IDE 
