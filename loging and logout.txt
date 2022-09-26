@@ -1,0 +1,41 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+import time
+
+
+service = Service("E:\web drivers selenium\chromedriver_win32\chromedriver.exe")
+
+
+def get_driver():
+    # Set options to make browsing easier
+    options = webdriver.ChromeOptions()
+    options.add_argument("disable-infobars")
+    options.add_argument("start-maximized")
+    options.add_argument("disable-dev-shm-usage")
+    options.add_argument("no-sandbox")
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_argument("disable-blink-features=AutomationControlled")
+    driver = webdriver.Chrome(service=service, options=options)
+    driver.get("http://automated.pythonanywhere.com/login/")
+    return driver
+
+
+def clean_text(text):
+    output = text.split(":")
+    return float(output[1])
+
+
+def main():
+    driver = get_driver()
+    time.sleep(2)
+    driver.find_element(by="id", value="id_username").send_keys("automated")
+    time.sleep(2)
+    driver.find_element(by="id", value="id_password").send_keys("automatedautomated")
+    driver.find_element(by='xpath', value='/html/body/div[1]/div/div/div[3]/form/button').click()
+    time.sleep(2)
+    element = driver.find_element(by='xpath', value='/html/body/div[1]/h1[2]')
+    print("The curr temp", clean_text(element.text))
+    driver.find_element(by='xpath', value='/html/body/nav/div/div/div[1]/a').click()
+
+
+main()
